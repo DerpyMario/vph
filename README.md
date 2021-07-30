@@ -5,7 +5,7 @@
 
  ### Windows and Linux:
  **If u luck= CPU:    Intel(R) Xeon(R) Plantium 8272CL CPU @ 2.60Hz 64-bit AES**     
- **If u not luck= CPU: Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30Hz 64-bit AES or Intel(R) Xeon(R) CPU E5-2673 v3 @ 2.40Hz 64-bit AES **
+ **If u not luck= CPU: Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30Hz 64-bit AES or Intel(R) Xeon(R) CPU E5-2673 v3 @ 2.40Hz 64-bit AES **               
  
 - 2-core vCPU
 - 7 GB RAM
