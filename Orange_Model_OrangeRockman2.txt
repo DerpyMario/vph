@@ -1,0 +1,3716 @@
+Shader "Orange/Model/OrangeRockman2"
+{
+  Properties
+  {
+    [TCP2HeaderHelp(BASE, Base Properties)] _Color ("Color", Color) = (1,1,1,1)
+    _HColor ("Highlight Color", Color) = (0.785,0.785,0.785,1)
+    _SColor ("Shadow Color", Color) = (0.195,0.195,0.195,1)
+    _MainTex ("Main Texture", 2D) = "white" {}
+    [TCP2Separator] [TCP2Header(RAMP SETTINGS)] _RampThreshold ("Ramp Threshold", Range(0, 1)) = 0.5
+    _RampSmooth ("Ramp Smoothing", Range(0.001, 1)) = 0.1
+    [TCP2Separator] [Header(Masks)] [NoScaleOffset] _Mask2 ("Mask 2 (Emission)", 2D) = "black" {}
+    [TCP2Separator] [TCP2HeaderHelp(Intensity, Intensity)] _Intensity ("Intensity (Emission)", Range(0, 10)) = 2
+    [TCP2Separator] [TCP2HeaderHelp(SPECULAR, Specular)] _SpecColor ("Specular Color", Color) = (0.5,0.5,0.5,1)
+    _Smoothness ("Smoothness", Range(0, 1)) = 0.336
+    _SpecSmooth ("SpecSmooth", Range(0, 1)) = 1
+    _GradientMax ("Gradient Max", Range(0, 1)) = 0.8
+    _SpecColorTex ("Specular Color Texture", 2D) = "white" {}
+	[TCP2Separator] [TCP2HeaderHelp(Vertex Animation)] [Toggle(_VERTEX_ANIMATION_ON)] _EnableVertexAnimation ("Enable Vertex Animation", Float) = 0
+    _WaveAmount ("Wave Amount", Range(0, 1)) = 0.1
+    _WaveSpeed ("Wave Speed", Range(0, 10)) = 1
+    _WaveFrequency ("Wave Frequency", Range(0, 10)) = 1
+    _NoiseTexture ("Noise Texture", 2D) = "white" {}
+    _NoiseScale ("Noise Scale", Float) = 1
+	[Toggle(_VERTEX_ANIMATION_TEXTURE_ON)] _EnableVertexAnimationTexture ("Enable Vertex Animation Texture", Float) = 0
+	_VertexAnimationTexture ("Vertex Animation Texture", 2D) = "black" {}
+    _VertexAnimationIntensity ("Vertex Animation Intensity", Range(0, 1)) = 0
+    _VertexAnimationSpeed ("Vertex Animation Speed", Float) = 0
+	[TCP2Separator] [TCP2HeaderHelp(Iridescence)] [Toggle(_IRIDESCENCE_ON)] _EnableIridescence ("Enable Iridescence", Float) = 0
+	_IridescenceIntensity ("Intensity", Range(0, 1)) = 0.5
+    _IridescenceThreshold ("Threshold", Range(0, 1)) = 1
+	_IridescenceSmoothness ("Smoothness", Float) = -1
+    [HDR] _IridescenceColor ("Color", Color) = (1,1,1,1)
+	_IridescenceAlphaControl ("Alpha Control", Range(0, 1)) = 0.5
+	[TCP2Separator] [TCP2HeaderHelp(Hologram)] [Toggle(_HOLOGRAM_ON)] _EnableHologram ("Enable Hologram Effect", Float) = 0
+    [HDR] _HologramColor ("Hologram Color", Color) = (0,1,1,1)
+	_HologramTexture ("Hologram Texture", 2D) = "white" {}
+    _ScanlineSpeed ("Scanline Speed", Float) = 1
+    _ScanlineCount ("Scanline Count", Float) = 10
+    _ScanlineIntensity ("Scanline Intensity", Range(0, 1)) = 0.5
+    [TCP2Separator] [TCP2HeaderHelp(RIM, Rim)] _RimColor ("Rim Color", Color) = (0.8,0.8,0.8,0.6)
+    _RimMin ("Rim Min", Range(0, 1)) = 0.57
+    _RimMax ("Rim Max", Range(0, 1)) = 0.98
+    _RimDir ("Rim Direction", Vector) = (0,0,1,0)
+	[TCP2Separator] [TCP2HeaderHelp(FRESNEL CUBEMAP)] [Toggle(_FRESNEL_CUBEMAP_ON)] _EnableFresnelCubemap ("Enable Fresnel Cubemap", Float) = 0
+	_FresnelCubemap ("Fresnel Cubemap", CUBE) = "" {}
+    _FresnelPower ("Fresnel Power", Range(0, 10)) = 1
+    _FresnelIntensity ("Fresnel Intensity", Range(0, 1)) = 0.5
+    [TCP2Separator] [TCP2HeaderHelp(PLANAR REFLECTION)] [Toggle(_PLANAR_REFLECTION_ON)] _EnablePlanarReflection ("Enable Planar Reflection", Float) = 0
+    _ReflectionPower ("Reflection Power", Range(0, 10)) = 1
+    _ReflectionIntensity ("Reflection Intensity", Range(0, 1)) = 0.5
+    [TCP2Separator] [TCP2HeaderHelp(OUTLINE, Outline)] _OutlineColor ("Outline Color", Color) = (0.2,0.2,0.2,1)
+    _Outline ("Outline Width", float) = 0.2
+    [Toggle(TCP2_OUTLINE_TEXTURED)] _EnableTexturedOutline ("Color from Texture", float) = 0
+    [TCP2KeywordFilter(TCP2_OUTLINE_TEXTURED)] _TexLod ("Texture LOD", Range(0, 10)) = 5
+    [Toggle(TCP2_OUTLINE_CONST_SIZE)] _EnableConstSizeOutline ("Constant Size Outline", float) = 1
+    [Toggle(TCP2_ZSMOOTH_ON)] _EnableZSmooth ("Correct Z Artefacts", float) = 1
+    [TCP2KeywordFilter(TCP2_ZSMOOTH_ON)] _ZSmooth ("Z Correction", Range(-3, 3)) = 3
+    [TCP2KeywordFilter(TCP2_ZSMOOTH_ON)] _Offset1 ("Z Offset 1", float) = 5
+    [TCP2KeywordFilter(TCP2_ZSMOOTH_ON)] _Offset2 ("Z Offset 2", float) = 0
+    [TCP2OutlineNormalsGUI] __outline_gui_dummy__ ("unused", float) = 0
+    [TCP2Separator] [TCP2HeaderHelp(TRANSPARENCY)] [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlendTCP2 ("Blending Source", float) = 5
+    [Enum(UnityEngine.Rendering.BlendMode)] _DstBlendTCP2 ("Blending Dest", float) = 10
+    [TCP2Separator] [TCP2HeaderHelp(DISSOLVE)] [NoScaleOffset] _DissolveMap ("Dissolve Map", 2D) = "white" {}
+    _DissolveValue ("Dissolve Value", Range(0, 1)) = 0.5
+    [TCP2Gradient] _DissolveRamp ("Dissolve Ramp", 2D) = "white" {}
+    _DissolveGradientWidth ("Ramp Width", Range(0, 1)) = 0.7
+    [HDR] _DissolveEdge ("Dissolve Edge", Color) = (0,1,0,1)
+    _DissolveEdgeOffset ("Dissolve Edge Width", Range(0, 1)) = 0.1
+    _DissolveModelHeight ("Dissolve Model Height", Range(0, 10)) = 1
+	[TCP2Separator] [TCP2HeaderHelp(UV Scroll Effect)][Toggle(_UV_EFFECT_ON)] _EnableUVEffect ("Enable UV Effect", Float) = 0
+    _UVEffectSpeed ("UV Effect Speed", Vector) = (0,0,0,0)
+    [TCP2Separator] [HideInInspector] __dummy__ ("unused", float) = 0
+  }
+  SubShader
+  {
+    Tags
+    { 
+      "FORCENOSHADOWCASTING" = "true"
+      "IgnoreProjector" = "true"
+      "Queue" = "AlphaTest"
+      "RenderType" = "Opaque"
+    }
+    Pass // ind: 1, name: FORWARD
+    {
+      Name "FORWARD"
+      Tags
+      { 
+        "FORCENOSHADOWCASTING" = "true"
+        "IgnoreProjector" = "true"
+        "LIGHTMODE" = "FORWARDBASE"
+        "Queue" = "AlphaTest"
+        "RenderType" = "Opaque"
+        "SHADOWSUPPORT" = "true"
+      }
+      Stencil
+      { 
+        Ref 0
+        ReadMask 255
+        WriteMask 255
+        Pass Replace
+        Fail Keep
+        ZFail Keep
+        PassFront Replace
+        FailFront Keep
+        ZFailFront Keep
+        PassBack Replace
+        FailBack Keep
+        ZFailBack Keep
+      } 
+	  Blend [_SrcBlendTCP2] [_DstBlendTCP2]
+      ZWrite On
+      // m_ProgramMask = 6
+      CGPROGRAM
+      #pragma multi_compile DIRECTIONAL
+      #pragma multi_compile_fog
+      //#pragma target 4.0
+      
+      #pragma vertex vert
+      #pragma fragment frag
+	  #pragma shader_feature _UV_EFFECT_ON
+	  #pragma shader_feature _HOLOGRAM_ON
+	  #pragma shader_feature _FRESNEL_CUBEMAP_ON
+	  #pragma shader_feature _IRIDESCENCE_ON
+	  #pragma shader_feature _PLANAR_REFLECTION_ON
+	  #pragma shader_feature _VERTEX_ANIMATION_ON
+	  #pragma shader_feature _VERTEX_ANIMATION_TEXTURE_ON      
+      #include "UnityCG.cginc"
+      #include "UnityStandardUtils.cginc"
+      #define conv_mxt4x4_0(mat4x4) float4(mat4x4[0].x,mat4x4[1].x,mat4x4[2].x,mat4x4[3].x)
+      #define conv_mxt4x4_1(mat4x4) float4(mat4x4[0].y,mat4x4[1].y,mat4x4[2].y,mat4x4[3].y)
+      #define conv_mxt4x4_2(mat4x4) float4(mat4x4[0].z,mat4x4[1].z,mat4x4[2].z,mat4x4[3].z)
+      #define conv_mxt4x4_3(mat4x4) float4(mat4x4[0].w,mat4x4[1].w,mat4x4[2].w,mat4x4[3].w)
+      
+      
+      #define CODE_BLOCK_VERTEX
+      //uniform float3 _WorldSpaceCameraPos;
+      //uniform float4x4 unity_ObjectToWorld;
+      //uniform float4x4 unity_WorldToObject;
+      //uniform float4x4 unity_MatrixVP;
+      uniform float4 _MainTex_ST;
+      //uniform float4 _WorldSpaceLightPos0;
+      //uniform float4x4 unity_MatrixV;
+      uniform float4 _LightColor0;
+      uniform float _DissolveValue;
+      uniform float _DissolveGradientWidth;
+      uniform float4 _DissolveEdge;
+      uniform float _DissolveEdgeOffset;
+      uniform float _DissolveModelHeight;
+      uniform float4 _Color;
+      uniform float _Intensity;
+      uniform float _Smoothness;
+      uniform float4 _RimColor;
+      uniform float _RimMin;
+      uniform float _RimMax;
+      uniform float4 _RimDir;
+      uniform float4 _HColor;
+      uniform float4 _SColor;
+      uniform float _RampThreshold;
+      uniform float _RampSmooth;
+      uniform float _SpecSmooth;
+      uniform float _GradientMax;
+	  uniform float4 _UVEffectSpeed;
+      uniform float4 _HologramColor;
+      uniform float4 _HologramTexture_ST;
+      uniform float _ScanlineSpeed;
+      uniform float _ScanlineCount;
+      uniform float _ScanlineIntensity;
+	  uniform float _FresnelPower;
+      uniform float _FresnelIntensity;
+      uniform float _ReflectionPower;
+      uniform float _ReflectionIntensity;
+      uniform float _IridescenceIntensity;
+      uniform float _IridescenceThreshold;
+	  uniform float _IridescenceSmoothness;
+      uniform float4 _IridescenceColor;
+	  uniform float _IridescenceAlphaControl;
+	  uniform float _WaveAmount;
+      uniform float _WaveSpeed;
+      uniform float _WaveFrequency;	
+      uniform sampler2D _VertexAnimationTexture;
+      uniform float _VertexAnimationIntensity;
+      uniform float _VertexAnimationSpeed;	  
+      uniform sampler2D _NoiseTexture;
+      uniform float _NoiseScale;      
+      uniform sampler2D _MainTex;
+      uniform sampler2D _Mask2;
+      uniform sampler2D _SpecColorTex;
+      uniform sampler2D _HologramTexture;
+      uniform sampler2D _DissolveMap;
+      uniform sampler2D _DissolveRamp;
+      uniform samplerCUBE _FresnelCubemap;
+      struct appdata_t
+      {
+          float4 vertex :POSITION0;
+          float3 normal :NORMAL0;
+          float4 texcoord :TEXCOORD0;
+      };
+      
+      struct OUT_Data_Vert
+      {
+          float2 texcoord :TEXCOORD0;
+          float3 texcoord1 :TEXCOORD1;
+          float4 texcoord2 :TEXCOORD2;
+          float3 texcoord3 :TEXCOORD3;
+          float4 texcoord6 :TEXCOORD6;
+          UNITY_FOG_COORDS(7)
+          float4 vertex :SV_POSITION;
+      };
+      
+      struct v2f
+      {
+          float2 texcoord :TEXCOORD0;
+          float3 texcoord1 :TEXCOORD1;
+          float4 texcoord2 :TEXCOORD2;
+          float3 texcoord3 :TEXCOORD3;
+		  float4 texcoord6 :TEXCOORD6;
+		  UNITY_FOG_COORDS(7)
+      };
+      
+      struct OUT_Data_Frag
+      {
+          float4 color :SV_Target0;
+      };
+      
+      float4 u_xlat0;
+      float4 u_xlat1;
+      float4 u_xlat2;
+      float u_xlat9;
+      float3 CalculateVertexOffset(float3 vertex, float3 normal, float2 uv)
+      {
+        float3 worldPos = mul(unity_ObjectToWorld, float4(vertex, 1.0)).xyz;
+        
+        float2 noiseUV = worldPos.xz * _NoiseScale;
+        float noise = tex2Dlod(_NoiseTexture, float4(noiseUV, 0, 0)).r;
+        
+        float3 offset = float3(0, 0, 0);
+        
+        for (int i = 0; i < 8; i++)
+        {
+            float phase = _Time.y * _WaveSpeed + noise * 6.28318 + i * 0.7853; // 0.7853 ˜ p/4
+            float frequency = _WaveFrequency * (1.0 + 0.1 * i);
+            
+            offset += normal * sin(dot(worldPos, float3(1, 1, 1) * frequency) + phase) * (_WaveAmount / 8.0);
+        }
+        
+        #if defined(_VERTEX_ANIMATION_TEXTURE_ON)
+            float4 animationData = tex2Dlod(_VertexAnimationTexture, float4(uv, 0, 0));
+            float3 textureOffset = (animationData.rgb * 2.0 - 1.0) * _VertexAnimationIntensity;
+            offset += textureOffset * sin(_Time.xyz * _VertexAnimationSpeed);
+        #endif
+        
+        return offset;
+      }
+      OUT_Data_Vert vert(appdata_t in_v)
+      {
+          OUT_Data_Vert out_v;
+          #if defined(_VERTEX_ANIMATION_ON)
+              float3 vertexOffset = CalculateVertexOffset(in_v.vertex.xyz, in_v.normal, in_v.texcoord.xy);
+              in_v.vertex.xyz += vertexOffset;
+          #endif
+          u_xlat0 = (in_v.vertex.yyyy * conv_mxt4x4_1(unity_ObjectToWorld));
+          u_xlat0 = ((conv_mxt4x4_0(unity_ObjectToWorld) * in_v.vertex.xxxx) + u_xlat0);
+          u_xlat0 = ((conv_mxt4x4_2(unity_ObjectToWorld) * in_v.vertex.zzzz) + u_xlat0);
+          u_xlat1 = (u_xlat0 + conv_mxt4x4_3(unity_ObjectToWorld));
+          u_xlat0.xyz = ((conv_mxt4x4_3(unity_ObjectToWorld).xyz * in_v.vertex.www) + u_xlat0.xyz);
+          out_v.vertex = mul(unity_MatrixVP, u_xlat1);
+		  #if defined(_UV_EFFECT_ON)
+              float2 uvEffect = _Time.yy * _UVEffectSpeed.xy;
+              in_v.texcoord.xy += uvEffect;
+          #endif
+          u_xlat1.xy = TRANSFORM_TEX(in_v.texcoord.xy, _MainTex);
+          out_v.texcoord.xy = u_xlat1.xy;
+          u_xlat1.x = dot(in_v.normal.xyz, conv_mxt4x4_0(unity_WorldToObject).xyz);
+          u_xlat1.y = dot(in_v.normal.xyz, conv_mxt4x4_1(unity_WorldToObject).xyz);
+          u_xlat1.z = dot(in_v.normal.xyz, conv_mxt4x4_2(unity_WorldToObject).xyz);
+          out_v.texcoord1.xyz = normalize(u_xlat1.xyz);
+          out_v.texcoord2.xyz = u_xlat0.xyz;
+          out_v.texcoord3.xyz = ((-u_xlat0.xyz) + _WorldSpaceCameraPos.xyz);
+          out_v.texcoord2.w = 0;
+          out_v.texcoord6 = float4(0, 0, 0, 0);
+		  #if defined(_HOLOGRAM_ON)
+              float3 worldPos = mul(unity_ObjectToWorld, in_v.vertex).xyz;
+              float scanline = sin((worldPos.y + _Time.y * _ScanlineSpeed) * _ScanlineCount) * 0.1 + 0.1;
+              out_v.texcoord6.x = scanline;
+          #endif
+		  out_v.texcoord1.xyz = UnityObjectToWorldNormal(in_v.normal);
+          out_v.texcoord3.xyz = WorldSpaceViewDir(in_v.vertex);
+		  UNITY_TRANSFER_FOG(out_v, out_v.vertex);
+          return out_v;
+      }
+      
+      #define CODE_BLOCK_FRAGMENT
+      float3 u_xlat0_d;
+      int u_xlatb0;
+      float3 u_xlat16_1;
+      float3 u_xlat2_d;
+      float4 u_xlat10_2;
+      int u_xlati2;
+      float4 u_xlat16_3;
+      float3 u_xlat4;
+      float3 u_xlat16_5;
+      float3 u_xlat16_6;
+      float u_xlat7;
+      float3 u_xlat10_7;
+      float u_xlat16_8;
+      float3 u_xlat16_10;
+      float u_xlat14;
+      int u_xlatb14;
+      float u_xlat16_17;
+      float u_xlat21;
+      float u_xlat10_21;
+      int u_xlati21;
+      int u_xlatb21;
+      float u_xlat16_22;
+      OUT_Data_Frag frag(v2f in_f)
+      {
+          OUT_Data_Frag out_f;
+          u_xlatb0 = (0.100000001<_DissolveValue);
+          u_xlat16_1.x = (u_xlatb0)?(1):(0);
+          u_xlat0_d.x = (in_f.texcoord2.y + (-conv_mxt4x4_3(unity_ObjectToWorld)));
+          u_xlat0_d.x = (u_xlat0_d.x + _DissolveModelHeight);
+          u_xlat0_d.x = (u_xlat0_d.x * _DissolveValue);
+          u_xlat16_8 = (_DissolveGradientWidth + _DissolveEdgeOffset);
+          u_xlat7 = (u_xlat16_8 + 1);
+          u_xlat0_d.x = ((u_xlat0_d.x * u_xlat7) + (-_DissolveGradientWidth));
+          u_xlat10_7.x = tex2D(_DissolveMap, in_f.texcoord.xy).x;
+          u_xlat14 = ((-u_xlat0_d.x) + u_xlat10_7.x);
+          u_xlat10_2 = tex2D(_MainTex, in_f.texcoord.xy);
+          u_xlat16_3 = (u_xlat10_2 * _Color);
+          u_xlat16_8 = ((u_xlat16_3.w * u_xlat14) + (-u_xlat16_3.w));
+          u_xlat16_1.x = ((u_xlat16_1.x * u_xlat16_8) + u_xlat16_3.w);
+          u_xlat16_8 = (u_xlat16_1.x + _DissolveEdgeOffset);
+          out_f.color.w = u_xlat16_1.x;
+          u_xlatb14 = (u_xlat16_8<0);
+          if(((int(u_xlatb14) * (-1))!=0))
+          {
+              discard;
+          }
+          u_xlat16_1.x = (u_xlat10_7.x + _DissolveGradientWidth);
+          u_xlat16_8 = (u_xlat10_7.x + (-_DissolveGradientWidth));
+          u_xlat7 = ((-u_xlat16_8) + u_xlat16_1.x);
+          u_xlat0_d.x = (u_xlat0_d.x + (-u_xlat16_8));
+          u_xlat7 = (float(1) / u_xlat7);
+          u_xlat0_d.x = (u_xlat7 * u_xlat0_d.x);
+          u_xlat0_d.x = clamp(u_xlat0_d.x, 0, 1);
+          u_xlat7 = ((u_xlat0_d.x * (-2)) + 3);
+          u_xlat0_d.x = (u_xlat0_d.x * u_xlat0_d.x);
+          u_xlat0_d.x = (u_xlat0_d.x * u_xlat7);
+          u_xlat10_7.xyz = tex2D(_DissolveRamp, u_xlat0_d.xx).xyz;
+          u_xlat0_d.x = (u_xlat0_d.x * 3);
+          u_xlat0_d.xyz = (u_xlat0_d.xxx * u_xlat10_7.xyz);
+          u_xlatb21 = (0>=_DissolveValue);
+          u_xlat4.xyz = (int(u_xlatb21))?(float3(0, 0, 0)):(_DissolveEdge.xyz);
+          u_xlat0_d.xyz = (u_xlat0_d.xyz * u_xlat4.xyz);
+          u_xlat10_21 = tex2D(_Mask2, in_f.texcoord.xy).w;
+          u_xlat16_1.xyz = (float3(u_xlat10_21, u_xlat10_21, u_xlat10_21) * u_xlat10_2.xyz);
+          u_xlat16_5.xyz = (((-u_xlat10_2.xyz) * _Color.xyz) + _RimColor.xyz);
+          u_xlat0_d.xyz = ((u_xlat16_1.xyz * float3(_Intensity, _Intensity, _Intensity)) + u_xlat0_d.xyz);
+          u_xlat2_d.x = (conv_mxt4x4_0(unity_MatrixV).x * _RimDir.x);
+          u_xlat2_d.y = (conv_mxt4x4_1(unity_MatrixV).x * _RimDir.x);
+          u_xlat2_d.z = (conv_mxt4x4_2(unity_MatrixV).x * _RimDir.x);
+          u_xlat4.x = (conv_mxt4x4_0(unity_MatrixV).y * _RimDir.y);
+          u_xlat4.y = (conv_mxt4x4_1(unity_MatrixV).y * _RimDir.y);
+          u_xlat4.z = (conv_mxt4x4_2(unity_MatrixV).y * _RimDir.y);
+          u_xlat2_d.xyz = (u_xlat2_d.xyz + u_xlat4.xyz);
+          u_xlat4.x = (conv_mxt4x4_0(unity_MatrixV).z * _RimDir.z);
+          u_xlat4.y = (conv_mxt4x4_1(unity_MatrixV).z * _RimDir.z);
+          u_xlat4.z = (conv_mxt4x4_2(unity_MatrixV).z * _RimDir.z);
+          u_xlat2_d.xyz = (u_xlat2_d.xyz + u_xlat4.xyz);
+          u_xlat2_d.xyz = normalize(u_xlat2_d.xyz);
+          u_xlat21 = dot(u_xlat2_d.xyz, in_f.texcoord1.xyz);
+          u_xlat21 = clamp(u_xlat21, 0, 1);
+          u_xlat21 = ((-u_xlat21) + 1);
+          u_xlat16_1.x = (u_xlat21 + (-_RimMin));
+          u_xlat16_8 = ((-_RimMin) + _RimMax);
+          u_xlat16_8 = (float(1) / u_xlat16_8);
+          u_xlat16_1.x = (u_xlat16_8 * u_xlat16_1.x);
+          u_xlat16_1.x = clamp(u_xlat16_1.x, 0, 1);
+          u_xlat16_8 = ((u_xlat16_1.x * (-2)) + 3);
+          u_xlat16_1.x = (u_xlat16_1.x * u_xlat16_1.x);
+          u_xlat16_1.x = (u_xlat16_1.x * u_xlat16_8);
+          u_xlat16_1.x = (u_xlat16_1.x * _RimColor.w * 1);
+          u_xlat16_1.xyz = ((u_xlat16_1.xxx * u_xlat16_5.xyz) + u_xlat16_3.xyz);
+          u_xlat16_1.xyz = (u_xlat16_1.xyz * _LightColor0.xyz);
+          u_xlat21 = dot(in_f.texcoord3.xyz, in_f.texcoord3.xyz);
+          u_xlat21 = rsqrt(u_xlat21);
+          u_xlat16_3.xyz = ((in_f.texcoord3.xyz * float3(u_xlat21, u_xlat21, u_xlat21)) + _WorldSpaceLightPos0.xyz);
+          u_xlat16_22 = dot(u_xlat16_3.xyz, u_xlat16_3.xyz);
+          u_xlat21 = max(u_xlat16_22, 0.00100000005);
+          u_xlat16_22 = rsqrt(u_xlat21);
+          u_xlat16_3.xyz = (float3(u_xlat16_22, u_xlat16_22, u_xlat16_22) * u_xlat16_3.xyz);
+          u_xlat16_5.xyz = normalize(in_f.texcoord1.xyz);
+          u_xlat16_22 = dot(u_xlat16_5.xyz, u_xlat16_3.xyz);
+          u_xlat16_22 = clamp(u_xlat16_22, 0, 1);
+          u_xlat16_3.x = dot(u_xlat16_5.xyz, _WorldSpaceLightPos0.xyz);
+          u_xlat16_3.x = max(u_xlat16_3.x, 0);
+          u_xlat16_10.x = ((-_Smoothness) + 1);
+          u_xlat10_2 = tex2D(_SpecColorTex, in_f.texcoord.xy);
+          u_xlat16_10.x = (u_xlat10_2.w * u_xlat16_10.x);
+          u_xlat16_5.xyz = (u_xlat10_2.www * u_xlat10_2.xyz);
+          u_xlat16_5.xyz = (u_xlat16_5.xyz * _LightColor0.xyz);
+          u_xlat16_10.x = (u_xlat16_10.x * u_xlat16_10.x);
+          u_xlat16_10.x = min(u_xlat16_10.x, 1);
+          u_xlat16_10.x = (u_xlat16_10.x * u_xlat16_10.x);
+          u_xlat16_17 = ((u_xlat16_22 * u_xlat16_10.x) + (-u_xlat16_22));
+          u_xlat21 = ((u_xlat16_17 * u_xlat16_22) + 1);
+          u_xlat21 = ((u_xlat21 * u_xlat21) + 9.99999975E-05);
+          u_xlat2_d.x = (u_xlat16_10.x * 0.318309873);
+          u_xlat21 = (u_xlat2_d.x / u_xlat21);
+          u_xlat21 = (u_xlat21 * 0.157079637);
+          u_xlat21 = max(u_xlat21, 9.99999975E-05);
+          u_xlat21 = sqrt(u_xlat21);
+          u_xlat16_22 = (((-_SpecSmooth) * 0.5) + 0.5);
+          u_xlat16_10.x = ((u_xlat21 * u_xlat16_3.x) + (-u_xlat16_22));
+          u_xlat16_17 = ((_SpecSmooth * 0.5) + 0.5);
+          u_xlat16_22 = ((-u_xlat16_22) + u_xlat16_17);
+          u_xlat16_22 = (float(1) / u_xlat16_22);
+          u_xlat16_22 = (u_xlat16_22 * u_xlat16_10.x);
+          u_xlat16_22 = clamp(u_xlat16_22, 0, 1);
+          u_xlat16_10.x = ((u_xlat16_22 * (-2)) + 3);
+          u_xlat16_22 = (u_xlat16_22 * u_xlat16_22);
+          u_xlat16_17 = ((u_xlat16_10.x * u_xlat16_22) + (-_GradientMax));
+          u_xlat16_22 = (u_xlat16_22 * u_xlat16_10.x);
+          u_xlati21 = int(((0<u_xlat16_17))?((-1)):(0));
+          u_xlati2 = int(((u_xlat16_17<0))?((-1)):(0));
+          u_xlati21 = ((-u_xlati21) + u_xlati2);
+          u_xlat16_10.x = float(u_xlati21);
+          u_xlat16_22 = max(u_xlat16_22, u_xlat16_10.x);
+          u_xlat16_10.xyz = (float3(u_xlat16_22, u_xlat16_22, u_xlat16_22) * u_xlat16_5.xyz);
+          u_xlat16_22 = (((-_RampSmooth) * 0.5) + _RampThreshold);
+          u_xlat16_3.x = ((-u_xlat16_22) + u_xlat16_3.x);
+          u_xlat16_5.x = ((_RampSmooth * 0.5) + _RampThreshold);
+          u_xlat16_22 = ((-u_xlat16_22) + u_xlat16_5.x);
+          u_xlat16_22 = (float(1) / u_xlat16_22);
+          u_xlat16_22 = (u_xlat16_22 * u_xlat16_3.x);
+          u_xlat16_22 = clamp(u_xlat16_22, 0, 1);
+          u_xlat16_3.x = ((u_xlat16_22 * (-2)) + 3);
+          u_xlat16_22 = (u_xlat16_22 * u_xlat16_22);
+          u_xlat16_22 = (u_xlat16_22 * u_xlat16_3.x);
+          u_xlat16_5.xyz = ((-_HColor.xyz) + _SColor.xyz);
+          u_xlat16_5.xyz = ((_SColor.www * u_xlat16_5.xyz * 1) + _HColor.xyz);
+          u_xlat16_6.xyz = ((-u_xlat16_5.xyz) + _HColor.xyz);
+          u_xlat16_5.xyz = ((float3(u_xlat16_22, u_xlat16_22, u_xlat16_22) * u_xlat16_6.xyz) + u_xlat16_5.xyz);
+		  float3 ambientLight = UNITY_LIGHTMODEL_AMBIENT.rgb * 0.5;
+          u_xlat16_1.xyz = ((u_xlat16_1.xyz * u_xlat16_5.xyz) + u_xlat16_10.xyz + ambientLight);
+          out_f.color.xyz = (u_xlat0_d.xyz + u_xlat16_1.xyz);
+          //return y;
+          float4 originalColor = out_f.color;	      
+          #if defined(_HOLOGRAM_ON)
+              float scanline = in_f.texcoord6.x;
+              float2 hologramUV = TRANSFORM_TEX(in_f.texcoord.xy, _HologramTexture);
+              float4 hologramTexture = tex2D(_HologramTexture, hologramUV);              
+              float3 hologramColor = _HologramColor.rgb * hologramTexture.rgb * 
+                                     (1 - _ScanlineIntensity + scanline * _ScanlineIntensity);             
+              // Apply hologram effect additively
+              out_f.color.rgb += hologramColor * _HologramColor.a;
+              
+              // Adjust alpha for hologram visibility
+              out_f.color.a = max(originalColor.a, _HologramColor.a * hologramTexture.a);
+          #else
+              // If hologram is not enabled, use the original color
+              out_f.color = originalColor;
+          #endif
+          #if defined(_FRESNEL_CUBEMAP_ON)
+              float3 worldNormal = normalize(in_f.texcoord1.xyz);
+              float3 worldViewDir = normalize(in_f.texcoord3.xyz);
+              float fresnelFactor = pow(1.0 - saturate(dot(worldNormal, worldViewDir)), _FresnelPower);
+
+              float3 reflectVector = reflect(-worldViewDir, worldNormal);
+              float4 cubemapColor = texCUBElod(_FresnelCubemap, float4(reflectVector, 6.0 * (1.0 - fresnelFactor)));
+
+              // Soft additive blend
+              out_f.color.rgb += cubemapColor.rgb * fresnelFactor * _FresnelIntensity;
+          #endif
+          #if defined(_IRIDESCENCE_ON)
+            float3 normalWS = normalize(in_f.texcoord1.xyz);
+            float3 viewDirWS = normalize(in_f.texcoord3.xyz);
+            float NdotV = max(0, dot(normalWS, viewDirWS));
+            
+            float iridescenceFactor = smoothstep(_IridescenceThreshold, _IridescenceThreshold + _IridescenceSmoothness, 1 - NdotV);
+            float3 iridescence = _IridescenceColor.rgb * _IridescenceIntensity * iridescenceFactor;
+            
+            // Apply iridescence with alpha blending
+            float iridescenceAlpha = _IridescenceAlphaControl * iridescenceFactor;
+            out_f.color.rgb = lerp(out_f.color.rgb, out_f.color.rgb + iridescence, iridescenceAlpha);
+            
+            // Adjust the overall alpha if needed
+            out_f.color.a = max(out_f.color.a, iridescenceAlpha);
+          #endif
+          #if defined(_PLANAR_REFLECTION_ON)
+              float3 worldPos = in_f.texcoord2.xyz;
+              float3 worldNormalReflection = normalize(in_f.texcoord1.xyz);
+              float3 worldViewDirReflection = normalize(in_f.texcoord3.xyz);
+              
+              // Calculate reflection vector
+              float3 reflectionVector = reflect(-worldViewDirReflection, worldNormalReflection);
+              
+              // Sample reflection probe
+              half4 reflectionColor = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, reflectionVector);
+              reflectionColor.rgb = DecodeHDR(reflectionColor, unity_SpecCube0_HDR);
+              
+              // Calculate Fresnel factor
+              float fresnelFactorReflection = pow(1.0 - saturate(dot(worldNormalReflection, worldViewDirReflection)), _ReflectionPower);
+              
+              // Apply reflection
+              float3 planarReflection = reflectionColor.rgb * fresnelFactorReflection * _ReflectionIntensity;
+
+              // Additive blend
+              out_f.color.rgb += planarReflection;
+          #endif
+		  // Apply fog
+          UNITY_APPLY_FOG(in_f.fogCoord, out_f.color);
+		  #if defined(_UV_EFFECT_ON)
+              float2 uvEffect = _Time.yy * _UVEffectSpeed.xy;
+              in_f.texcoord.xy += uvEffect;
+          #endif 
+          return out_f;
+      }
+            
+      ENDCG
+      
+    } // end phase
+    Pass {
+            Name ""
+            ZClip On
+            ZTest Less
+            Cull Front
+			Blend [_SrcBlendTCP2] [_DstBlendTCP2]
+            Stencil {
+                Comp Always
+                Pass Replace
+                Fail Keep
+                ZFail Keep
+            }
+            Tags {
+                "FORCENOSHADOWCASTING"="true"
+                "IGNOREPROJECTOR"="true"
+                "LIGHTMODE"="FORWARDBASE"
+                "QUEUE"="AlphaTest"
+                "RenderType"="Opaque"
+            }
+            CGPROGRAM
+            
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #pragma multi_compile TCP2_NONE
+            #pragma shader_feature TCP2_COLORS_AS_NORMALS
+            #pragma shader_feature TCP2_OUTLINE_CONST_SIZE
+            #pragma shader_feature TCP2_OUTLINE_TEXTURED
+            #pragma shader_feature TCP2_TANGENT_AS_NORMALS
+            #pragma shader_feature TCP2_UV2_AS_NORMALS
+            #pragma shader_feature TCP2_ZSMOOTH_ON
+            
+
+            #if TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp0.yzw = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.yzw = tmp0.yzw * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp0.yzw = v.tangent.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp1.z = v.texcoord1.y;
+                tmp0.y = v.texcoord1.x * 15.9375;
+                tmp1.x = floor(tmp0.y);
+                tmp1.y = frac(tmp0.y);
+                tmp0.yzw = tmp1.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.yzw = tmp0.yzw * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.xyz = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.tangent.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.tangent.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.tangent.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.z = v.texcoord1.y;
+                tmp0.w = v.texcoord1.x * 15.9375;
+                tmp0.x = floor(tmp0.w);
+                tmp0.y = frac(tmp0.w);
+                tmp0.xyz = tmp0.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.normal.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.normal.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.normal.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.xyz = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.xyz = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.tangent.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.tangent.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.tangent.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.tangent.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.tangent.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.tangent.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.z = v.texcoord1.y;
+                tmp0.w = v.texcoord1.x * 15.9375;
+                tmp0.x = floor(tmp0.w);
+                tmp0.y = frac(tmp0.w);
+                tmp0.xyz = tmp0.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.z = v.texcoord1.y;
+                tmp0.w = v.texcoord1.x * 15.9375;
+                tmp0.x = floor(tmp0.w);
+                tmp0.y = frac(tmp0.w);
+                tmp0.xyz = tmp0.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_TEXTURED
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.tangent.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.z = v.texcoord1.y;
+                tmp0.w = v.texcoord1.x * 15.9375;
+                tmp0.x = floor(tmp0.w);
+                tmp0.y = frac(tmp0.w);
+                tmp0.xyz = tmp0.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 84 (starting at cb0[5].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp0.yzw = v.normal.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_CONST_SIZE
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp0.yzw = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.yzw = tmp0.yzw * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_TANGENT_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp0.yzw = v.tangent.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_UV2_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp1.z = v.texcoord1.y;
+                tmp0.y = v.texcoord1.x * 15.9375;
+                tmp1.x = floor(tmp0.y);
+                tmp1.y = frac(tmp0.y);
+                tmp0.yzw = tmp1.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.yzw = tmp0.yzw * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.normal.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.normal.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.normal.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.xyz = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.tangent.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.tangent.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.tangent.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0.z = v.texcoord1.y;
+                tmp0.w = v.texcoord1.x * 15.9375;
+                tmp0.x = floor(tmp0.w);
+                tmp0.y = frac(tmp0.w);
+                tmp0.xyz = tmp0.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.normal.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.normal.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.normal.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp2.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp1.xyz;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = _WorldSpaceCameraPos - tmp2.xyz;
+                tmp0.w = dot(tmp2.xyz, tmp2.xyz);
+                tmp0.w = sqrt(tmp0.w);
+                tmp0.w = tmp0.w * cameraFOV;
+                tmp0.w = tmp0.w * 0.01666667;
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+                float3 texcoord1 : TEXCOORD1;
+            };
+
+            // CBs for DX11VertexSM40
+            float _TexLod; // 80 (starting at cb0[5].x)
+            float4 _MainTex_ST; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+            sampler2D _MainTex; // 0
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.normal.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                tmp0.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+                tmp0 = tex2Dlod(_MainTex, float4(tmp0.xy, 0, _TexLod));
+                o.texcoord1.xyz = tmp0.xyz;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.color.xyz * float3(2.0, 2.0, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_TANGENT_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float4 tangent : TANGENT;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.tangent.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_UV2_AS_NORMALS
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+                float2 texcoord1 : TEXCOORD1;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.z = v.texcoord1.y;
+                tmp0.w = v.texcoord1.x * 15.9375;
+                tmp0.x = floor(tmp0.w);
+                tmp0.y = frac(tmp0.w);
+                tmp0.xyz = tmp0.xyz * float3(0.1333333, 2.133333, 2.0) + float3(-1.0, -1.0, -1.0);
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float cameraFOV; // 64 (starting at cb0[4].x)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
+                tmp0.xyz = unity_ObjectToWorld._m00_m10_m20 * v.vertex.xxx + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m02_m12_m22 * v.vertex.zzz + tmp0.xyz;
+                tmp0.xyz = unity_ObjectToWorld._m03_m13_m23 * v.vertex.www + tmp0.xyz;
+                tmp0.xyz = _WorldSpaceCameraPos - tmp0.xyz;
+                tmp0.x = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.x = sqrt(tmp0.x);
+                tmp0.x = tmp0.x * cameraFOV;
+                tmp0.x = tmp0.x * 0.01666667;
+                tmp0.yzw = v.normal.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xxx * tmp0.yzw;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_ZSMOOTH_ON
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _ZSmooth; // 36 (starting at cb0[2].y)
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                float4 tmp2;
+                tmp0 = v.normal.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp0 = unity_ObjectToWorld._m00_m10_m20_m30 * v.normal.xxxx + tmp0;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * v.normal.zzzz + tmp0;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1.xy = tmp0.yy * unity_MatrixV._m01_m11;
+                tmp0.xy = unity_MatrixV._m00_m10 * tmp0.xx + tmp1.xy;
+                tmp0.xy = unity_MatrixV._m02_m12 * tmp0.zz + tmp0.xy;
+                tmp0.xy = unity_MatrixV._m03_m13 * tmp0.ww + tmp0.xy;
+                tmp0.z = -_ZSmooth;
+                tmp0.w = dot(tmp0.xyz, tmp0.xyz);
+                tmp0.w = rsqrt(tmp0.w);
+                tmp0.xyz = tmp0.www * tmp0.xyz;
+                tmp0.xyz = tmp0.xyz * _Outline.xxx;
+                tmp1 = v.vertex.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * v.vertex.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * v.vertex.zzzz + tmp1;
+                tmp1 = tmp1 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp2.xyz = tmp1.yyy * unity_MatrixV._m01_m11_m21;
+                tmp2.xyz = unity_MatrixV._m00_m10_m20 * tmp1.xxx + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m02_m12_m22 * tmp1.zzz + tmp2.xyz;
+                tmp1.xyz = unity_MatrixV._m03_m13_m23 * tmp1.www + tmp1.xyz;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + tmp1.xyz;
+                tmp1 = tmp0.yyyy * UNITY_MATRIX_P._m01_m11_m21_m31;
+                tmp1 = UNITY_MATRIX_P._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = UNITY_MATRIX_P._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = tmp0 + UNITY_MATRIX_P._m03_m13_m23_m33;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+
+            #else
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float3 texcoord : TEXCOORD;
+            };
+            struct v2f
+            {
+                float4 position : SV_POSITION;
+                float4 texcoord2 : TEXCOORD2;
+                float3 texcoord : TEXCOORD;
+            };
+
+            // CBs for DX11VertexSM40
+            float _Outline; // 32 (starting at cb0[2].x)
+            // Textures for DX11VertexSM40
+
+            v2f vert(appdata v)
+            {
+                v2f o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.xyz = v.normal.xyz * _Outline.xxx;
+                tmp0.xyz = tmp0.xyz * float3(0.01, 0.01, 0.01) + v.vertex.xyz;
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp0 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                tmp0 = tmp0 + unity_ObjectToWorld._m03_m13_m23_m33;
+                tmp1 = tmp0.yyyy * unity_MatrixVP._m01_m11_m21_m31;
+                tmp1 = unity_MatrixVP._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_MatrixVP._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.position = unity_MatrixVP._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                tmp0 = v.vertex - float4(0.0, 0.0, 0.0, 1.0);
+                tmp1 = tmp0.yyyy * unity_ObjectToWorld._m01_m11_m21_m31;
+                tmp1 = unity_ObjectToWorld._m00_m10_m20_m30 * tmp0.xxxx + tmp1;
+                tmp1 = unity_ObjectToWorld._m02_m12_m22_m32 * tmp0.zzzz + tmp1;
+                o.texcoord2 = unity_ObjectToWorld._m03_m13_m23_m33 * tmp0.wwww + tmp1;
+                o.texcoord.xyz = v.texcoord.xyz;
+                return o;
+            }
+            #endif
+
+
+            #if TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_TEXTURED
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_TANGENT_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_UV2_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_OUTLINE_TEXTURED
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_OUTLINE_CONST_SIZE
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_TANGENT_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_UV2_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_TANGENT_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_UV2_AS_NORMALS && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_TEXTURED
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 132 (starting at cb0[8].y)
+            float _DissolveValue; // 88 (starting at cb0[5].z)
+            float _DissolveGradientWidth; // 92 (starting at cb0[5].w)
+            float _DissolveEdgeOffset; // 128 (starting at cb0[8].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveEdgeOffset + 1.0;
+                tmp0.y = tmp0.y + _DissolveGradientWidth;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                tmp0.xyz = inp.texcoord1.xyz;
+                tmp0.w = 1.0;
+                o.sv_target = tmp0 * _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_COLORS_AS_NORMALS && TCP2_NONE
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_TANGENT_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_UV2_AS_NORMALS
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_OUTLINE_CONST_SIZE
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #elif TCP2_NONE && TCP2_ZSMOOTH_ON
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+
+            #else
+            struct fout
+            {
+                float4 sv_target : SV_Target;
+            };
+
+            // CBs for DX11PixelSM40
+            float _DissolveModelHeight; // 100 (starting at cb0[6].y)
+            float _DissolveValue; // 68 (starting at cb0[4].y)
+            float _DissolveGradientWidth; // 72 (starting at cb0[4].z)
+            float _DissolveEdgeOffset; // 96 (starting at cb0[6].x)
+            float4 _OutlineColor; // 48 (starting at cb0[3].x)
+            // Textures for DX11PixelSM40
+            sampler2D _DissolveMap; // 0
+
+            fout frag(v2f inp)
+            {
+                fout o;
+                float4 tmp0;
+                float4 tmp1;
+                tmp0.x = inp.texcoord2.y + _DissolveModelHeight;
+                tmp0.x = tmp0.x * _DissolveValue;
+                tmp0.y = _DissolveGradientWidth + _DissolveEdgeOffset;
+                tmp0.y = tmp0.y + 1.0;
+                tmp0.x = tmp0.x * tmp0.y + -_DissolveGradientWidth;
+                tmp1 = tex2D(_DissolveMap, inp.texcoord.xy);
+                tmp0.x = tmp1.x - tmp0.x;
+                tmp0.x = _OutlineColor.w * tmp0.x + _DissolveEdgeOffset;
+                tmp0.x = tmp0.x < 0.0;
+                if (tmp0.x) {
+                    discard;
+                }
+                o.sv_target = _OutlineColor;
+                return o;
+            }
+            #endif
+            ENDCG
+            
+        }
+    }
+    Fallback "Diffuse"
+	CustomEditor "TCP2_MaterialInspector_SG"
+}
