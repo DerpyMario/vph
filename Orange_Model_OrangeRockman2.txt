@@ -521,7 +521,7 @@ Shader "Orange/Model/OrangeRockman2"
       
     } // end phase
     Pass {
-            Name ""
+            Name "Outline"
             ZClip On
             ZTest Less
             Cull Front
@@ -576,10 +576,10 @@ Shader "Orange/Model/OrangeRockman2"
             float _Outline; // 32 (starting at cb0[2].x)
             // Textures for DX11VertexSM40
             sampler2D _MainTex; // 0
-
+			
             v2f vert(appdata v)
             {
-                v2f o;
+                v2f o;				
                 float4 tmp0;
                 float4 tmp1;
                 tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
@@ -621,14 +621,12 @@ Shader "Orange/Model/OrangeRockman2"
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
                 float3 texcoord : TEXCOORD;
-                float4 tangent : TANGENT;
             };
             struct v2f
             {
                 float4 position : SV_POSITION;
                 float4 texcoord2 : TEXCOORD2;
                 float3 texcoord : TEXCOORD;
-                float3 texcoord1 : TEXCOORD1;
             };
 
             // CBs for DX11VertexSM40
@@ -641,7 +639,7 @@ Shader "Orange/Model/OrangeRockman2"
 
             v2f vert(appdata v)
             {
-                v2f o;
+                v2f o;			
                 float4 tmp0;
                 float4 tmp1;
                 tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
@@ -699,10 +697,10 @@ Shader "Orange/Model/OrangeRockman2"
             float _Outline; // 32 (starting at cb0[2].x)
             // Textures for DX11VertexSM40
             sampler2D _MainTex; // 0
-
+			
             v2f vert(appdata v)
             {
-                v2f o;
+                v2f o;			
                 float4 tmp0;
                 float4 tmp1;
                 tmp0.xyz = v.vertex.yyy * unity_ObjectToWorld._m01_m11_m21;
@@ -762,13 +760,13 @@ Shader "Orange/Model/OrangeRockman2"
             float _TexLod; // 80 (starting at cb0[5].x)
             float _ZSmooth; // 36 (starting at cb0[2].y)
             float4 _MainTex_ST; // 64 (starting at cb0[4].x)
-            float _Outline; // 32 (starting at cb0[2].x)
+            float _Outline; // 32 (starting at cb0[2].x)	
             // Textures for DX11VertexSM40
             sampler2D _MainTex; // 0
-
+			
             v2f vert(appdata v)
             {
-                v2f o;
+                v2f o;			
                 float4 tmp0;
                 float4 tmp1;
                 float4 tmp2;
@@ -831,7 +829,7 @@ Shader "Orange/Model/OrangeRockman2"
             float _TexLod; // 80 (starting at cb0[5].x)
             float _ZSmooth; // 36 (starting at cb0[2].y)
             float4 _MainTex_ST; // 64 (starting at cb0[4].x)
-            float _Outline; // 32 (starting at cb0[2].x)
+            float _Outline; // 32 (starting at cb0[2].x)	
             // Textures for DX11VertexSM40
             sampler2D _MainTex; // 0
 
