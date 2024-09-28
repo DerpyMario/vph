@@ -10,7 +10,7 @@
 - 2-core vCPU
 - 7 GB RAM
 - 14 GB SSD Disk **(Excluded System used)**
-### MacOS 10.15
+### macOS 15
 - 3-core vCPU
 - 14 GB RAM
 - 14 GB SSD Disk **(Excluded System used)**
