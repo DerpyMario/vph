@@ -11,52 +11,15 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 360
     steps:
-    - uses: actions/checkout@v4    
+    - uses: actions/checkout@v2
     - name: Setting Up the MacOS Environment
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
         MAC_USER_PASSWORD: ${{ secrets.MAC_USER_PASSWORD }}
         VNC_PASSWORD: ${{ secrets.VNC_PASSWORD }}
         MAC_REALNAME: ${{ secrets.MAC_REALNAME }}
-      run: |
-        chmod +x macos.sh
-        # Run with sudo, not source (source runs in current shell without elevation)
-        sudo -E bash macos.sh "$MAC_USER_PASSWORD" "$VNC_PASSWORD" "$NGROK_AUTH_TOKEN" "$MAC_REALNAME" &
-        SCRIPT_PID=$!
-        echo "Script started with PID: $SCRIPT_PID"
-        
-        # Wait for ngrok to be ready (check for up to 60 seconds)
-        echo "Waiting for ngrok to start..."
-        for i in {1..60}; do
-          if curl -s http://127.0.0.1:4040/api/tunnels > /dev/null 2>&1; then
-            echo "Ngrok is ready!"
-            break
-          fi
-          sleep 1
-        done
-    
-    - name: Get Ngrok Connection URL
-      run: |
-        echo "=========================================="
-        echo "VNC CONNECTION INFORMATION"
-        echo "=========================================="
-        NGROK_URL=$(curl --silent http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-        if [ -n "$NGROK_URL" ] && [ "$NGROK_URL" != "null" ]; then
-          echo "Ngrok URL: $NGROK_URL"
-          # Extract host and port for VNC client
-          NGROK_HOST=$(echo $NGROK_URL | sed 's|tcp://||' | cut -d':' -f1)
-          NGROK_PORT=$(echo $NGROK_URL | sed 's|tcp://||' | cut -d':' -f2)
-          echo "VNC Host: $NGROK_HOST"
-          echo "VNC Port: $NGROK_PORT"
-          echo "Username: tcv"
-          echo "=========================================="
-        else
-          echo "ERROR: Could not retrieve ngrok URL"
-          echo "Ngrok API response:"
-          curl --silent http://127.0.0.1:4040/api/tunnels | jq '.'
-        fi
-    
+      run: source macos.sh "$MAC_USER_PASSWORD" "$VNC_PASSWORD" "$NGROK_AUTH_TOKEN" "$MAC_REALNAME"
+    - name: Connecting MacOS with Ngrok to VNC Server
+      run: curl --silent http://127.0.0.1:4040/api/tunnels | jq '.tunnels[0].public_url'
     - name: Keep Running MacOS System and keepAlive
-      uses: mxschmitt/action-tmate@v3  # Updated to v3
-      with:
-        limit-access-to-actor: true  # Only the workflow initiator can access
+      uses: mxschmitt/action-tmate@v2
