@@ -32,7 +32,6 @@ jobs:
             echo "Ngrok is ready!"
             break
           fi
-          echo "Waiting... ($i/60)"
           sleep 1
         done
     
