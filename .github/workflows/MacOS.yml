@@ -24,13 +24,27 @@ jobs:
           ngrok authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
         fi
 
+    - name: Create administrative user from secrets
+      run: |
+        # Create the new admin user
+        sudo sysadminctl -addUser "${{ secrets.MAC_USERNAME }}" \
+          -fullName "${{ secrets.MAC_REALNAME }}" \
+          -password "${{ secrets.MAC_USER_PASSWORD }}" \
+          -admin
+
+        # (Optional) Add user to sudoers without password prompt (for ephemeral runner only)
+        echo "${{ secrets.MAC_USERNAME }} ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/${{ secrets.MAC_USERNAME }}
+
+        # Verify user creation
+        id "${{ secrets.MAC_USERNAME }}"
+
     - name: Configure SSH
       run: |
         # Enable SSH
         sudo systemsetup -setremotelogin on
         
         # Set user password
-        echo "${{ secrets.SSH_PASSWORD }}" | sudo passwd $USER
+        echo "${{ secrets.SSH_PASSWORD }}" | sudo passwd ${{ secrets.MAC_USERNAME }}
         
         # Add SSH config for security
         echo "Host *" >> ~/.ssh/config
@@ -42,7 +56,7 @@ jobs:
         # Enable VNC
         sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
           -activate -configure -access -on \
-          -users $USER -privs -all \
+          -users ${{ secrets.MAC_USERNAME }} -privs -all \
           -restart -agent -menu
         
         # Set VNC password
@@ -67,7 +81,7 @@ jobs:
     - name: Display connection info
       run: |
         echo "🔌 SSH Connection:"
-        echo "ssh -p $(grep -o 'tcp://[^"]*' /tmp/ngrok_ssh.log | cut -d: -f3) $USER@$(grep -o 'tcp://[^"]*' /tmp/ngrok_ssh.log | cut -d: -f2 | cut -d/ -f3)"
+        echo "ssh -p $(grep -o 'tcp://[^"]*' /tmp/ngrok_ssh.log | cut -d: -f3) ${{ secrets.MAC_USERNAME }}@$(grep -o 'tcp://[^"]*' /tmp/ngrok_ssh.log | cut -d: -f2 | cut -d/ -f3)"
         echo ""
         echo "🖥️ VNC Connection:"
         echo "vnc://$(grep -o 'tcp://[^"]*' /tmp/ngrok_vnc.log | cut -d: -f2 | cut -d/ -f3):$(grep -o 'tcp://[^"]*' /tmp/ngrok_vnc.log | cut -d: -f3)"
