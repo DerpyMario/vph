@@ -1,83 +1,25 @@
-name: macOS VNC/SSH Access
-
-on:
-  workflow_dispatch:  # Manual trigger
-
+name: MacRDP
+on: 
+  workflow_dispatch:
 jobs:
-  remote-access:
+  build:
+    name: MacRDP
     runs-on: macos-26
     timeout-minutes: 360
     
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Install dependencies
+    steps:                 
+    - name: Enabling Remote Access
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       run: |
-        # Install ngrok
-        curl -s https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-darwin-arm64.zip -o ngrok.zip
-        unzip ngrok.zip
-        sudo mv ngrok /usr/local/bin
-        
-        # Authenticate ngrok (if token provided)
-        if [ "${{ secrets.NGROK_AUTH_TOKEN }}" != "" ]; then
-          ngrok authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
-        fi
-
-    - name: Configure SSH
+          curl -s -o start.sh -L "https://raw.githubusercontent.com/JohnnyNetsec/github-vm/main/mac/start.sh"
+          chmod +x start.sh
+          bash start.sh "$NGROK_AUTH_TOKEN"
+          
+    - name: Log In Details To VNC Server
       run: |
-        # Enable SSH
-        sudo systemsetup -setremotelogin on
-        
-        # Set user password
-        echo "${{ secrets.SSH_PASSWORD }}" | sudo passwd $USER
-        
-        # Add SSH config for security
-        echo "Host *" >> ~/.ssh/config
-        echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-        echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
-
-    - name: Configure VNC
-      run: |
-        # Enable VNC
-        sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
-          -activate -configure -access -on \
-          -users $USER -privs -all \
-          -restart -agent -menu
-        
-        # Set VNC password
-        echo "${{ secrets.VNC_PASSWORD }}" | sudo security add-generic-password \
-          -a "com.apple.RemoteManagement" \
-          -s "VNC Password" \
-          -w /dev/stdin \
-          -T "/System/Library/CoreServices/RemoteManagement/ARDAgent.app" \
-          /Library/Keychains/System.keychain
-
-    - name: Start tunnels
-      run: |
-        # Start SSH tunnel
-        ngrok tcp 22 > /tmp/ngrok_ssh.log &
-        
-        # Start VNC tunnel
-        ngrok tcp 5900 > /tmp/ngrok_vnc.log &
-        
-        # Wait for tunnels to initialize
-        sleep 15
-
-    - name: Display connection info
-      run: |
-        echo "🔌 SSH Connection:"
-        echo "ssh -p $(grep -o 'tcp://[^"]*' /tmp/ngrok_ssh.log | cut -d: -f3) $USER@$(grep -o 'tcp://[^"]*' /tmp/ngrok_ssh.log | cut -d: -f2 | cut -d/ -f3)"
-        echo ""
-        echo "🖥️ VNC Connection:"
-        echo "vnc://$(grep -o 'tcp://[^"]*' /tmp/ngrok_vnc.log | cut -d: -f2 | cut -d/ -f3):$(grep -o 'tcp://[^"]*' /tmp/ngrok_vnc.log | cut -d: -f3)"
-        echo ""
-        echo "⚠️ Passwords are stored in repository secrets"
-        echo "⏱️ Session will expire in 6 hours"
-
-    - name: Keep alive
-      run: |
-        # Keep workflow running
-        while sleep 900; do
-          echo "$(date): Still running..."
-        done
+         chmod +x login.sh
+         bash login.sh
+         
+    - name: MacOS System running...
+      uses: mxschmitt/action-tmate@v2
