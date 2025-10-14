@@ -32,7 +32,7 @@ jobs:
           -password "${{ secrets.MAC_USER_PASSWORD }}" \
           -admin
 
-        # (Optional) Add user to sudoers without password prompt (for ephemeral runner only)
+        # Add user to sudoers without password prompt
         echo "${{ secrets.MAC_USERNAME }} ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/${{ secrets.MAC_USERNAME }}
 
         # Verify user creation
